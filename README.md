@@ -9,7 +9,7 @@ CVE: [CVE-XXXX-XXXXX — pending / to be assigned]
 Reported by: jprodriguez33
 
 
-Summary
+#Summary
 
 Templater's "User Scripts" feature lets a .js file in a configured folder be
 called from templates, e.g. tp.user.myscript(). To do this, Templater loads
@@ -25,14 +25,14 @@ no template ran and no suggestion was ever accepted.
 In short: a script's code can run just because someone edits text next to a
 string that looks like tp.user.something.
 
-Impact
+#Impact
 
 Execution reaches Node.js with require available, so it is real code
-execution — filesystem access, process access, and system commands are all
+execution, filesystem access, process access, and system commands are all
 reachable. On a desktop Obsidian install this means an attacker-controlled
 script can run arbitrary code in the victim's user context.
 
-Exploitability
+#Exploitability
 
 Through a shared or synced Obsidian vault, an attacker can plant:
 
@@ -57,7 +57,7 @@ What triggers execution (confirmed by testing)
 
 ActionTriggers executionOpening the vaultNoOpening/viewing the note (Reading mode)NoClicking elsewhere in the noteNoArrow-keying past the trigger textNoEditing text elsewhere in the same noteNoEditing (typing or deleting a character) right after tp.user.<name>.Yes
 
-Technical detail
+#Technical detail
 
 Two code paths both reach the same eval():
 
@@ -81,7 +81,7 @@ wrapping_fn(req, mod, exp);
 This runs the entire top-level body of the script file, and because require
 is in scope, it is full Node.js code execution.
 
-Relevant files:
+#Relevant files:
 
 
 src/UserScriptFunctions.ts — load_user_script_function, generate_user_script_functions
@@ -89,7 +89,7 @@ src/TpDocumentation.ts — get_user_script_object_documentation
 src/Autocomplete.ts — onTrigger, getSuggestions
 
 
-Proof of concept
+#Proof of concept
 
 Place the following file in the vault's configured user-scripts folder as
 _scripts/poc.js:
@@ -99,7 +99,7 @@ jsrequire('fs').writeFileSync(
   'RCE confirmed: ' + new Date()
 );
 
-Steps to reproduce:
+#Steps to reproduce:
 
 
 Set Templater's user-scripts folder to _scripts, containing the file above
@@ -113,7 +113,7 @@ confirming code execution.
 The PoC deliberately only writes a marker file; it demonstrates execution
 without carrying a harmful payload.
 
-Remediation
+#Remediation
 
 Fixed in Templater 2.23.1. Users should update to 2.23.1 or later.
 
@@ -131,7 +131,7 @@ file to find its exported names without running it, instead of eval()-ing
 the whole thing.
 
 
-Disclosure timeline
+#Disclosure timeline
 
 
 [report date] — Reported privately to Zachatoo (the current maintainer) by
@@ -140,11 +140,11 @@ email; he promptly fixed the issue and released it.
 2026-07-04 — Public advisory published.
 
 
-Credit
+#Credit
 
 Discovered and reported by jprodriguez33.
 
-References
+#References
 
 
 Fix commit: https://github.com/SilentVoid13/Templater/commit/9a0806047af3a7288a8b2acb4869e37f0af6ea29
