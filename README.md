@@ -138,8 +138,8 @@ suggested during disclosure, either of which resolves the issue:
 
 ## Disclosure timeline
 
-- **[report date]** — Reported privately to Zachatoo (the current maintainer) by
-  email; he promptly fixed the issue and released it.
+- **2026-07-02** — Reported privately to Zachatoo (the current maintainer) by
+  email; he promptly fixed the issue and released it. 
 - **2026-07-03** — Fix released in Templater `2.23.1` (previous release `2.23.0`, 2026-06-23).
 - **2026-07-04** — Public advisory published.
 
